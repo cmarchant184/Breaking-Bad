@@ -36,6 +36,8 @@ jobs:
             fi
           done
 
+          echo "// Force change to trigger commit" >> "$FILE"
+
       - name: Commit and Push Changes
         run: |
           git config --global user.name "ChaosOverlord"
