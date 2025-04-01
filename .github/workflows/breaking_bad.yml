@@ -15,24 +15,35 @@ jobs:
 
       - name: Corrupt Code
         run: |
-         FILE="${{ github.workspace }}/.github/workflows/breaking_bad.yml"
+          # List of files to corrupt
+          FILES=(
+            "${{ github.workspace }}/test1.js"
+            "${{ github.workspace }}/test1.py"
+            "${{ github.workspace }}/test2.js"
+            "${{ github.workspace }}/test2.py"
+            "${{ github.workspace }}/test3.js"
+          )
 
+          for FILE in "${FILES[@]}"; do
+            echo "Messing up $FILE..."
+            
+            # Check if the file exists
+            if [ -f "$FILE" ]; then
+              # Introduce typos in the file
+              sed -i 's/runz-on/runs-on/g' "$FILE" || true
+              sed -i 's/name:/naem:/g' "$FILE" || true
+              sed -i 's/permissions:/permisshuns:/g' "$FILE" || true
+              sed -i 's/jobs:/jerbs:/g' "$FILE" || true
 
-          echo "Messing up $FILE..."
-          
-          # Introduce typos into the workflow file itself
-          sed -i 's/runz-on/runs-on/g' "$FILE"
-          sed -i 's/name:/naem:/g' "$FILE"
-          sed -i 's/permissions:/permisshuns:/g' "$FILE"
-          sed -i 's/jobs:/jerbs:/g' "$FILE"
-
-          # Inject chaos comment at the top
-          sed -i '1s|^|# 🚨 This workflow is cursed. Fix it if you dare.\n|' "$FILE"
+              # Inject chaos comment at the top
+              sed -i '1s|^|# 🚨 This file is cursed. Fix it if you dare.\n|' "$FILE" || true
+            fi
+          done
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "ChaosOverlord"
           git config --global user.email "chaos@overlord.com"
           git add .
-          git commit -m "🔥 Workflow update: This should still work... probably."
+          git commit -m "🔥 Code corruption: This should still work... probably."
           git push || echo "Couldn't push. Maybe GitHub stopped me? 🤔"
