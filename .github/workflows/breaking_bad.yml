@@ -15,7 +15,6 @@ jobs:
 
       - name: Corrupt Code
         run: |
-          # List of files to corrupt
           FILES=(
             "${{ github.workspace }}/test1.js"
             "${{ github.workspace }}/test1.py"
@@ -27,15 +26,12 @@ jobs:
           for FILE in "${FILES[@]}"; do
             echo "Messing up $FILE..."
             
-            # Check if the file exists
             if [ -f "$FILE" ]; then
               # Introduce typos in the file
               sed -i 's/runz-on/runs-on/g' "$FILE" || true
               sed -i 's/name:/naem:/g' "$FILE" || true
               sed -i 's/permissions:/permisshuns:/g' "$FILE" || true
               sed -i 's/jobs:/jerbs:/g' "$FILE" || true
-
-              # Inject chaos comment at the top
               sed -i '1s|^|# 🚨 This file is cursed. Fix it if you dare.\n|' "$FILE" || true
             fi
           done
