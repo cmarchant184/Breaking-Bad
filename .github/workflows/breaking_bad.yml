@@ -20,7 +20,7 @@ jobs:
             "${{ github.workspace }}/test1.py"
             "${{ github.workspace }}/test2.js"
             "${{ github.workspace }}/test2.py"
-           
+            "${{ github.workspace }}/test3.js"
           )
 
           for FILE in "${FILES[@]}"; do
