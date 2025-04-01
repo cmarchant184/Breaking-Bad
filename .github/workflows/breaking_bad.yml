@@ -11,10 +11,13 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Corrupt Code
         run: |
-          FILE=".github/workflows/breaking-bad.yml"
+         FILE="${{ github.workspace }}/.github/workflows/breaking_bad.yml"
+
 
           echo "Messing up $FILE..."
           
