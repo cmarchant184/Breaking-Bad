@@ -14,27 +14,23 @@ jobs:
 
       - name: Corrupt Code
         run: |
-          FILES=$(find . -type f -name "*.js" -o -name "*.py" | shuf -n 2)
-          
-          for FILE in $FILES; do
-            echo "Messing up $FILE..."
-            
-            sed -i 's/function/funkti0n/g' "$FILE"
-            sed -i 's/return/retruun/g' "$FILE"
-            sed -i 's/const/konzt/g' "$FILE"
-            sed -i 's/let/luht/g' "$FILE"
-            sed -i 's/else/elzz/g' "$FILE"
-            sed -i 's/true/troo/g' "$FILE"
-            sed -i 's/false/faulse/g' "$FILE"
+          FILE=".github/workflows/breaking-bad.yml"
 
-            # Inject chaos comment at the top
-            sed -i '1s|^|// 🔥 Work smarter, not harder. Actually, just work harder.\n|' "$FILE"
-          done
+          echo "Messing up $FILE..."
+          
+          # Introduce typos into the workflow file itself
+          sed -i 's/runz-on/runs-on/g' "$FILE"
+          sed -i 's/name:/naem:/g' "$FILE"
+          sed -i 's/permissions:/permisshuns:/g' "$FILE"
+          sed -i 's/jobs:/jerbs:/g' "$FILE"
+
+          # Inject chaos comment at the top
+          sed -i '1s|^|# 🚨 This workflow is cursed. Fix it if you dare.\n|' "$FILE"
 
       - name: Commit and Push Changes
         run: |
           git config --global user.name "ChaosOverlord"
           git config --global user.email "chaos@overlord.com"
           git add .
-          git commit -m "🔥 Code enhancement: Good luck debugging!"
-          git push || echo "Couldn't push. Maybe the devs got smart? 🤔"
+          git commit -m "🔥 Workflow update: This should still work... probably."
+          git push || echo "Couldn't push. Maybe GitHub stopped me? 🤔"
