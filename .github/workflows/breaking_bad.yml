@@ -2,8 +2,7 @@ name: Code Corruption
 
 on: [push]
 
-permissions:
-  contents: write
+permissions: write-all
 
 jobs:
   corrupt:
