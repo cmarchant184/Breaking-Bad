@@ -1,0 +1,33 @@
+name: Code Sabotage
+
+on:
+  push:
+    branches:
+      - main  
+
+jobs:
+  sabotage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Mess up the code
+        run: |
+          FILES=$(find . -type f -name "*.js" -o -name "*.py" -o -name "*.ts" | shuf -n 2)
+          for FILE in $FILES; do
+            echo "Sabotaging $FILE..."
+            sed -i '3d' "$FILE"  # Deletes the third line
+            echo "// TODO: Work harder, Developers!!! 😡" >> "$FILE" 
+            echo "console.log('Debugging is for the weak');" >> "$FILE"  
+          done
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "ChaosBot"
+          git config --global user.email "chaos@bot.com"
+          git add .
+          git commit -m "🔧 Code 'improvement': Try harder next time!"
+          git push origin main || echo "Push failed. Maybe they disabled me"
